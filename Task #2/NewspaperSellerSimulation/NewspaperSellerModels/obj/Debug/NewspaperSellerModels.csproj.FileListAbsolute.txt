@@ -30,3 +30,9 @@ C:\Users\Osama\Desktop\[InventorySimulation]_Class Library\NewspaperSellerSimula
 C:\Users\Osama\Desktop\[InventorySimulation]_Class Library\NewspaperSellerSimulation_Students\NewspaperSellerModels\bin\Debug\NewspaperSellerModels.pdb
 C:\Users\Osama\Desktop\[InventorySimulation]_Class Library\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.dll
 C:\Users\Osama\Desktop\[InventorySimulation]_Class Library\NewspaperSellerSimulation_Students\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.pdb
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\bin\Debug\NewspaperSellerModels.dll
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\bin\Debug\NewspaperSellerModels.pdb
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.csprojAssemblyReference.cache
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.csproj.CoreCompileInputs.cache
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.dll
+D:\FCIS\4thyear\Modeling & Simulation\Tasks 2\Task #2\NewspaperSellerSimulation\NewspaperSellerModels\obj\Debug\NewspaperSellerModels.pdb
