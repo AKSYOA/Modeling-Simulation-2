@@ -100,7 +100,6 @@ namespace NewspaperSellerSimulation
                 decimal Good = system.DemandDistributions[i].DayTypeDistributions[0].Probability;
                 decimal Fair = system.DemandDistributions[i].DayTypeDistributions[1].Probability;
                 decimal Poor = system.DemandDistributions[i].DayTypeDistributions[2].Probability;
-                Console.WriteLine(Good + " " + Fair + " " + Poor);
                 dataGridDemandDistributions.Rows.Add(Demand, Good, Fair, Poor);
             }
 
@@ -122,25 +121,17 @@ namespace NewspaperSellerSimulation
                 displayData();
 
                 #region // comments
+               
                 /*
-                Console.WriteLine(fileName);
-                Console.WriteLine(system.NumberOfServers);
-                Console.WriteLine(system.StoppingNumber);
-                Console.WriteLine(system.SelectionMethod);
-                Console.WriteLine(system.StoppingCriteria);
-                for (int i =0; i < system.InterarrivalDistribution.Count; i++)
+                for (int i =0; i < system.DemandDistributions.Count; i++)
                 {
-                    Console.WriteLine(system.InterarrivalDistribution[i].Time + " " + system.InterarrivalDistribution[i].Probability);
-                }
-                for (int i =0; i< system.Servers.Count; i++)
-                {
-                    Console.WriteLine(system.Servers[i].ID);
-                    for (int j =0; j < system.Servers[i].TimeDistribution.Count; j++)
+                    for (int j = 0; j < system.DemandDistributions[i].DayTypeDistributions.Count; j++)
                     {
-                    Console.WriteLine(system.Servers[i].TimeDistribution[j].Time + " " + system.Servers[i].TimeDistribution[j].Probability);
+                        Console.Write(system.DemandDistributions[i].DayTypeDistributions[j].Probability + " ");
                     }
+                    Console.WriteLine();
                 }
-               */
+                */
                 #endregion
             }
         }

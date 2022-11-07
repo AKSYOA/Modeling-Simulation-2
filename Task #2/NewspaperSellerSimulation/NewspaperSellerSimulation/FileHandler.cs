@@ -61,30 +61,17 @@ namespace NewspaperSellerSimulation
 
                     while (!String.IsNullOrEmpty(ln = sr.ReadLine()))
                     {
-                        DayTypeDistribution dayTypeDistributions = new DayTypeDistribution();
-                        DemandDistribution demandDistributions = new DemandDistribution();
+                        DemandDistribution demandDistribution = new DemandDistribution();
                         ln = ln.Replace(" ", string.Empty);
                         string[] values = ln.Split(',');
-                        int Demand = Int32.Parse(values[0]);
-                        decimal good = Decimal.Parse(values[1]);
-                        decimal fair = Decimal.Parse(values[2]);
-                        decimal poor = Decimal.Parse(values[3]);
-                        
 
-                        demandDistributions.Demand = Demand;
-                        dayTypeDistributions.Probability = good;
-                        dayTypeDistributions.DayType = Enums.DayType.Good;
-                        demandDistributions.DayTypeDistributions.Add(dayTypeDistributions);
-                        dayTypeDistributions.Probability = fair;
-                        dayTypeDistributions.DayType = Enums.DayType.Fair;
-                        demandDistributions.DayTypeDistributions.Add(dayTypeDistributions);
-                        dayTypeDistributions.Probability = poor;
-                        dayTypeDistributions.DayType = Enums.DayType.Poor;
-                        demandDistributions.DayTypeDistributions.Add(dayTypeDistributions);
+                        demandDistribution.Demand = Int32.Parse(values[0]);
+            
+                        demandDistribution.DayTypeDistributions.Add(new DayTypeDistribution(Decimal.Parse(values[1]), Enums.DayType.Good));
+                        demandDistribution.DayTypeDistributions.Add(new DayTypeDistribution(Decimal.Parse(values[2]), Enums.DayType.Fair));
+                        demandDistribution.DayTypeDistributions.Add(new DayTypeDistribution(Decimal.Parse(values[3]), Enums.DayType.Poor));
 
-                        system.DemandDistributions.Add(demandDistributions);
-
-
+                        system.DemandDistributions.Add(demandDistribution);
                     }
                 }
 
