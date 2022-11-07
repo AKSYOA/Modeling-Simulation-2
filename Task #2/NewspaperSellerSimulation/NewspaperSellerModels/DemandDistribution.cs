@@ -8,6 +8,8 @@ namespace NewspaperSellerModels
 {
     public class DemandDistribution
     {
+      
+     
         public DemandDistribution()
         {
             DayTypeDistributions = new List<DayTypeDistribution>();
