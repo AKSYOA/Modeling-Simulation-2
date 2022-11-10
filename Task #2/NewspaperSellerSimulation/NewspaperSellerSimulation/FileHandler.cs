@@ -53,6 +53,7 @@ namespace NewspaperSellerSimulation
                         system.DayTypeDistributions.Add(new DayTypeDistribution(good, Enums.DayType.Good));
                         system.DayTypeDistributions.Add(new DayTypeDistribution(fair, Enums.DayType.Fair));
                         system.DayTypeDistributions.Add(new DayTypeDistribution(poor, Enums.DayType.Poor));
+                      
                     }
                 }
                 else if (ln.Equals("DemandDistributions"))

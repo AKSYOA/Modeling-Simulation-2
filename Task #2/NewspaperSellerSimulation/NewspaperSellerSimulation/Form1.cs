@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NewspaperSellerModels;
-
+using NewspaperSellerTesting;
 
 namespace NewspaperSellerSimulation
 {
@@ -19,17 +19,19 @@ namespace NewspaperSellerSimulation
         private string fileName;
         private FileHandler fileHandler;
         private SimulationSystem system;
+        private Server server;
 
 
         public NumOfNewspapersText()
         {
             InitializeComponent();
             fileHandler = new FileHandler();
+            server = new Server();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            /*
             //DataTable dataTableDayType = new DataTable();
             //DataTable dataTableDemand = new DataTable();
 
@@ -60,14 +62,26 @@ namespace NewspaperSellerSimulation
             //   Program.simulationSystem.PerformanceMeasures.TotalScrapProfit,
             //   Program.simulationSystem.PerformanceMeasures.TotalNetProfit);
 
-
+            */
 
         }
 
+
+        //Button To Display Simulation Test .....
         private void button1_Click(object sender, EventArgs e)
         {
-            Perfomance perfomance = new Perfomance(system);
-            perfomance.Show();
+            if (system != null)
+            {
+                server.MainFunction();
+                Perfomance perfomance = new Perfomance(system);
+                perfomance.Show();
+                string result = TestingManager.Test(system, fileName);
+                MessageBox.Show(result);
+            }
+            else
+                MessageBox.Show("Please Choose Test Case");
+
+
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -75,6 +89,7 @@ namespace NewspaperSellerSimulation
 
         }
 
+        //Display Data Input in GUI .....
         public void displayData()
         {
 
@@ -83,6 +98,7 @@ namespace NewspaperSellerSimulation
             PurchasePriceText.Text = system.PurchasePrice.ToString();
             ScrapPriceText.Text = system.ScrapPrice.ToString();
             SellingPriceText.Text = system.SellingPrice.ToString();
+
             // Adding Data of Day Type..
             for (int i = 0; i < system.DayTypeDistributions.Count; i++)
             {
@@ -106,6 +122,8 @@ namespace NewspaperSellerSimulation
 
         }
 
+
+        //Function to get Test Cases.....
         private void OpenTestCase_Click(object sender, EventArgs e)
         {
             testCaseFileDialog = new OpenFileDialog();
@@ -113,12 +131,16 @@ namespace NewspaperSellerSimulation
 
             if (fileResult == DialogResult.OK)
             {
+                //Get File Test Case....
                 fileName = testCaseFileDialog.SafeFileName;
                 system = fileHandler.ReadTestCase(testCaseFileDialog.FileName);
                 dataGridDayTypeDistribution.Rows.Clear();
                 dataGridDemandDistributions.Rows.Clear();
-                
+                //Display Data in GUI.....
                 displayData();
+                //Calculate Comulative Probability .....
+                system.calculateCummProbability_DayType();
+                system.calculateCummProbability_Demand();
 
                 #region // comments
                
