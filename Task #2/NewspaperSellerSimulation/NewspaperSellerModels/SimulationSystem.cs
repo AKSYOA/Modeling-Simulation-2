@@ -31,6 +31,126 @@ namespace NewspaperSellerModels
         public PerformanceMeasures PerformanceMeasures { get; set; }
 
 
+
+        public void MainFunction()
+        {
+            List<SimulationCase> cases = new List<SimulationCase>();
+
+            Random rand = new Random();
+            int DemandOver = 0;
+            int DaysUnsold = 0;
+
+
+            PerformanceMeasures.TotalSalesProfit = 0;
+            PerformanceMeasures.TotalLostProfit = 0;
+            PerformanceMeasures.TotalNetProfit = 0;
+            PerformanceMeasures.TotalScrapProfit = 0;
+            PerformanceMeasures.TotalCost = (NumOfNewspapers * PurchasePrice) * NumOfRecords;
+
+
+            for (int i = 0; i < NumOfRecords; i++)
+            {
+                SimulationCase simulationCase = new SimulationCase();
+
+                simulationCase.DayNo = i + 1;
+                simulationCase.RandomNewsDayType = rand.Next(1, 100);
+                simulationCase.NewsDayType = DayType_Mapping(simulationCase);
+                simulationCase.RandomDemand = rand.Next(1, 100);
+                simulationCase.Demand = Demand_Mapping(simulationCase);
+                simulationCase.DailyCost = NumOfNewspapers * PurchasePrice;
+
+
+                if (simulationCase.Demand >= NumOfNewspapers)
+                {
+                    simulationCase.SalesProfit = NumOfNewspapers * SellingPrice;
+
+                    simulationCase.LostProfit = (simulationCase.Demand - NumOfNewspapers) * (SellingPrice - PurchasePrice);
+
+                    simulationCase.DailyNetProfit = simulationCase.SalesProfit - simulationCase.DailyCost - simulationCase.LostProfit;
+
+                    if (simulationCase.LostProfit != 0)
+                        DemandOver++;
+                }
+
+                else
+                {
+                    simulationCase.SalesProfit = simulationCase.Demand * SellingPrice;
+
+                    simulationCase.ScrapProfit = (NumOfNewspapers - simulationCase.Demand) * ScrapPrice;
+
+                    simulationCase.DailyNetProfit = simulationCase.SalesProfit - simulationCase.DailyCost + simulationCase.ScrapProfit;
+
+                    if (simulationCase.ScrapProfit != 0) 
+                        DaysUnsold++;
+                }
+
+
+                PerformanceMeasures.TotalSalesProfit += simulationCase.SalesProfit;
+                PerformanceMeasures.TotalNetProfit += simulationCase.DailyNetProfit;
+                PerformanceMeasures.TotalScrapProfit += simulationCase.ScrapProfit;
+                PerformanceMeasures.TotalLostProfit += simulationCase.LostProfit;
+                PerformanceMeasures.DaysWithMoreDemand = DemandOver;
+                PerformanceMeasures.DaysWithUnsoldPapers = DaysUnsold;
+                cases.Add(simulationCase);
+            }
+
+            SimulationTable = cases;
+        }
+
+
+
+
+        public Enums.DayType DayType_Mapping(SimulationCase simulationCase)
+        {
+            for(int i=0; i< DayTypeDistributions.Count; i++)
+            {
+                if (simulationCase.RandomNewsDayType >= DayTypeDistributions[i].MinRange && simulationCase.RandomNewsDayType <= DayTypeDistributions[i].MaxRange)
+                {
+                    return DayTypeDistributions[i].DayType;
+                } 
+            }
+            return 0;
+
+        }
+
+
+
+        public int Demand_Mapping(SimulationCase simulationCase)
+        {
+            foreach (DemandDistribution Demand in DemandDistributions)
+            {
+                if (simulationCase.NewsDayType == Enums.DayType.Good)
+                {
+                    if (simulationCase.RandomDemand >= Demand.DayTypeDistributions[0].MinRange &&
+                        simulationCase.RandomDemand <= Demand.DayTypeDistributions[0].MaxRange)
+                    {
+                        return Demand.Demand;
+                    }
+
+                }
+                else if (simulationCase.NewsDayType == Enums.DayType.Fair)
+                {
+                    if (simulationCase.RandomDemand >= Demand.DayTypeDistributions[1].MinRange &&
+                        simulationCase.RandomDemand <= Demand.DayTypeDistributions[1].MaxRange)
+                    {
+                        return Demand.Demand;
+                    }
+
+                }
+                else if (simulationCase.NewsDayType == Enums.DayType.Poor)
+                {
+                    if (simulationCase.RandomDemand >= Demand.DayTypeDistributions[2].MinRange &&
+                        simulationCase.RandomDemand <= Demand.DayTypeDistributions[2].MaxRange)
+                    {
+                        return Demand.Demand;
+                    }
+
+                }
+            }
+            return 0;
+        }
+        
+
         //Calculate Commulative Probability for Day Type .....
         public void calculateCummProbability_DayType()
         {
@@ -47,7 +167,6 @@ namespace NewspaperSellerModels
                     DayTypeDistributions[i].MinRange = DayTypeDistributions[i - 1].MaxRange + 1;
                 }
                 DayTypeDistributions[i].MaxRange = Decimal.ToInt32(DayTypeDistributions[i].CummProbability * 100);
-                //Console.WriteLine(DayTypeDistributions[i].CummProbability + " " + DayTypeDistributions[i].MinRange + " " + DayTypeDistributions[i].MaxRange);
             }
         }
 
@@ -55,8 +174,6 @@ namespace NewspaperSellerModels
         //Calculate Commulative Probability for Demand .....
         public void calculateCummProbability_Demand()
         {
-           // Console.WriteLine("DemandDistributions.Count: " + DemandDistributions.Count);
-           // Console.WriteLine("DayTypeDistributions.Count: " + DayTypeDistributions.Count);
             for (int i = 0; i < DemandDistributions.Count; i++)
             {
                 for (int j = 0; j < DayTypeDistributions.Count; j++)
@@ -73,25 +190,23 @@ namespace NewspaperSellerModels
                     }
                     if ((Decimal.ToInt32(DemandDistributions[i].DayTypeDistributions[j].CummProbability * 100)) > 100)
                         break;
-                    DemandDistributions[i].DayTypeDistributions[j].MaxRange = Decimal.ToInt32(DemandDistributions[i].DayTypeDistributions[j].CummProbability * 100);
-                    
-                   // Console.WriteLine(DemandDistributions[i].DayTypeDistributions[j].CummProbability + " " + DemandDistributions[i].DayTypeDistributions[j].MinRange + "-" + DemandDistributions[i].DayTypeDistributions[j].MaxRange);
+                    DemandDistributions[i].DayTypeDistributions[j].MaxRange = Decimal.ToInt32(DemandDistributions[i].DayTypeDistributions[j].CummProbability * 100);                
                 } 
-                //Console.WriteLine(DemandDistributions[i].DayTypeDistributions[0].CummProbability + " " + DemandDistributions[i].DayTypeDistributions[1].CummProbability + " " + DemandDistributions[i].DayTypeDistributions[2].CummProbability + "      " + DemandDistributions[i].DayTypeDistributions[0].MinRange + "-" + DemandDistributions[i].DayTypeDistributions[0].MaxRange + "   " +DemandDistributions[i].DayTypeDistributions[1].MinRange + "-" + DemandDistributions[i].DayTypeDistributions[1].MaxRange + "      " + DemandDistributions[i].DayTypeDistributions[2].MinRange + "-" + DemandDistributions[i].DayTypeDistributions[2].MaxRange);
             }
         }
 
-
-        //Display Probability ......
-        public void Disp()
+        public void Reset()
         {
-            for (int i = 0; i < DemandDistributions.Count; i++)
-            {
-                Console.WriteLine(DemandDistributions[i].DayTypeDistributions[0].Probability+ " " + DemandDistributions[i].DayTypeDistributions[1].Probability + " " + DemandDistributions[i].DayTypeDistributions[2].Probability);
-            }
+            PerformanceMeasures.DaysWithMoreDemand = 0;
+            PerformanceMeasures.DaysWithUnsoldPapers = 0;
         }
 
+        public void Simulation()
+        {
+            calculateCummProbability_DayType();
+            calculateCummProbability_Demand();
+            //Reset();
+            MainFunction();
+        }
     }
-
-
 }

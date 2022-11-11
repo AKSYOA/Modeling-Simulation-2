@@ -19,51 +19,18 @@ namespace NewspaperSellerSimulation
         private string fileName;
         private FileHandler fileHandler;
         private SimulationSystem system;
-        private Server server;
+
 
 
         public NumOfNewspapersText()
         {
             InitializeComponent();
             fileHandler = new FileHandler();
-            server = new Server();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            /*
-            //DataTable dataTableDayType = new DataTable();
-            //DataTable dataTableDemand = new DataTable();
-
-            //dataTableDayType.Columns.Add("Day Type");
-            //dataTableDayType.Columns.Add("Probability");
-            //dataTableDemand.Columns.Add("Demand");
-            //dataTableDemand.Columns.Add("Good");
-            //dataTableDemand.Columns.Add("Fair");
-            //dataTableDemand.Columns.Add("Poor");
-
-            //dataGridDayTypeDistribution.DataSource = dataTableDayType;
-            //dataGridDemandDistributions.DataSource = dataTableDemand;
-
-            //List<SimulationCase> Stable = Program.simulationSystem.SimulationTable;
-            //foreach (var value in Stable)
-            //{
-
-            //    dataTable.Rows.Add(value.DayNo, value.RandomNewsDayType,
-            //        value.NewsDayType, value.RandomDemand, 
-            //        value.Demand, value.SalesProfit,
-            //        value.LostProfit, value.ScrapProfit,
-            //        value.DailyNetProfit);
-            //}
-
-            //dataTable.Rows.Add("", "", ""
-            //   , "", "", Program.simulationSystem.PerformanceMeasures.TotalSalesProfit,
-            //   Program.simulationSystem.PerformanceMeasures.TotalLostProfit,
-            //   Program.simulationSystem.PerformanceMeasures.TotalScrapProfit,
-            //   Program.simulationSystem.PerformanceMeasures.TotalNetProfit);
-
-            */
-
+           
         }
 
 
@@ -72,7 +39,7 @@ namespace NewspaperSellerSimulation
         {
             if (system != null)
             {
-                server.MainFunction();
+                system.Simulation();
                 Perfomance perfomance = new Perfomance(system);
                 perfomance.Show();
                 string result = TestingManager.Test(system, fileName);
@@ -80,9 +47,8 @@ namespace NewspaperSellerSimulation
             }
             else
                 MessageBox.Show("Please Choose Test Case");
-
-
         }
+
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -118,12 +84,10 @@ namespace NewspaperSellerSimulation
                 decimal Poor = system.DemandDistributions[i].DayTypeDistributions[2].Probability;
                 dataGridDemandDistributions.Rows.Add(Demand, Good, Fair, Poor);
             }
-
-
         }
 
 
-        //Function to get Test Cases.....
+        //Button_Function to get Test Cases.....
         private void OpenTestCase_Click(object sender, EventArgs e)
         {
             testCaseFileDialog = new OpenFileDialog();
@@ -141,20 +105,6 @@ namespace NewspaperSellerSimulation
                 //Calculate Comulative Probability .....
                 system.calculateCummProbability_DayType();
                 system.calculateCummProbability_Demand();
-
-                #region // comments
-               
-                /*
-                for (int i =0; i < system.DemandDistributions.Count; i++)
-                {
-                    for (int j = 0; j < system.DemandDistributions[i].DayTypeDistributions.Count; j++)
-                    {
-                        Console.Write(system.DemandDistributions[i].DayTypeDistributions[j].Probability + " ");
-                    }
-                    Console.WriteLine();
-                }
-                */
-                #endregion
             }
         }
 

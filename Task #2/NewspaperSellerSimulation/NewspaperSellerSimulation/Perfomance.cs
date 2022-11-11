@@ -15,6 +15,7 @@ namespace NewspaperSellerSimulation
     public partial class Perfomance : Form
     {
         private SimulationSystem system;
+
         public Perfomance(SimulationSystem system)
         {
             InitializeComponent();
