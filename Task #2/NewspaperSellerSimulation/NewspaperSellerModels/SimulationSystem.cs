@@ -195,11 +195,11 @@ namespace NewspaperSellerModels
             }
         }
 
-        public void Reset()
-        {
-            PerformanceMeasures.DaysWithMoreDemand = 0;
-            PerformanceMeasures.DaysWithUnsoldPapers = 0;
-        }
+        //public void Reset()
+        //{
+        //    PerformanceMeasures.DaysWithMoreDemand = 0;
+        //    PerformanceMeasures.DaysWithUnsoldPapers = 0;
+        //}
 
         public void Simulation()
         {
